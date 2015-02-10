@@ -1,0 +1,56 @@
+(function () {
+  var przyciskLosowo = function () {
+    var button = document.getElementsByTagName('button')[0],
+        left = Math.random() * 90,
+        top = Math.random() * 90;
+
+    button.style.left = left + '%';
+    button.style.top = top + '%';
+  },
+  poNajechaniuNaPrzycisk = function (funkcja) {
+    document.getElementsByTagName('button')[0].addEventListener('mouseover', funkcja);
+  },
+  poKliknieciuWPrzycisk = function (funkcja) {
+    document.getElementsByTagName('button')[0].addEventListener('click', funkcja);
+  },
+  animujKwadrat = function (czas, lewo, gora, wysokosc, szerokosc, obrot, skala) {
+    var $kwadrat = $('.kwadrat');
+    lewo = lewo || 0;
+    gora = gora || 0;
+    obrot = obrot || 0;
+    wysokosc = wysokosc || $kwadrat.width;
+    szerokosc = szerokosc || $kwadrat.height;
+    czas = czas || 1000;
+
+    $kwadrat.animate({
+      'left': '+=' + lewo,
+      'top': '+=' + gora,
+      'rotate': '+=' + obrot,
+      'width': wysokosc,
+      'height': szerokosc
+    }, czas);
+  },
+  wykonujKolejke = function () {
+    var $kwadrat = $('.kwadrat');
+    $kwadrat.queue('fx');
+    timeout = setTimeout(wykonujKolejke, 100);
+  },
+  kolejkaAnimacji = function (animacje) {
+    var i;
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+
+    for (i in animacje) {
+      animacje[i]();
+    }
+    wykonujKolejke();
+  },
+  timeout;
+
+  window.poNajechaniuNaPrzycisk = poNajechaniuNaPrzycisk;
+  window.poKliknieciuWPrzycisk = poKliknieciuWPrzycisk;
+  window.przyciskLosowo = przyciskLosowo;
+  window.animujKwadrat = animujKwadrat;
+  window.kolejkaAnimacji = kolejkaAnimacji;
+})();
