@@ -7,6 +7,10 @@
     button.style.left = left + '%';
     button.style.top = top + '%';
   },
+  blokuj = function () {
+    blokada = true;
+    setTimeout(function () { blokada = false; }, 10);
+  },
   poNajechaniuNaPrzycisk = function (funkcja) {
     document.getElementsByTagName('button')[0].addEventListener('mouseover', funkcja);
   },
@@ -22,13 +26,16 @@
     szerokosc = szerokosc || $kwadrat.height;
     czas = czas || 1000;
 
-    $kwadrat.animate({
-      'left': '+=' + lewo,
-      'top': '+=' + gora,
-      'rotate': '+=' + obrot,
-      'width': wysokosc,
-      'height': szerokosc
-    }, czas);
+    if (!blokada) {
+      blokuj();
+      $kwadrat.animate({
+        'left': '+=' + lewo,
+        'top': '+=' + gora,
+        'rotate': '+=' + obrot,
+        'width': wysokosc,
+        'height': szerokosc
+      }, czas);
+    }
   },
   wykonujKolejke = function () {
     var $kwadrat = $('.kwadrat');
@@ -43,10 +50,12 @@
 
     for (i in animacje) {
       animacje[i]();
+      blokada = false;
     }
     wykonujKolejke();
   },
-  timeout;
+  timeout,
+  blokada = false;
 
   window.poNajechaniuNaPrzycisk = poNajechaniuNaPrzycisk;
   window.poKliknieciuWPrzycisk = poKliknieciuWPrzycisk;
